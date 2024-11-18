@@ -30,6 +30,5 @@ Build an ML classification model that accurately predicts the customers who defa
 - Deploying model to app
 - Deploying app to streamlit cloud
 
-- okay 
 
 
