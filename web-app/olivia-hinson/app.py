@@ -4,10 +4,13 @@ import pandas as pd
 import joblib 
 import os
 
-
 ######### initial setup 
+
 st.set_page_config(page_title='CCDP@streamlit', layout='wide')
 st.title(':orange[Credit Card Default Prediction]')
+payment_status = ['Paid On Time', 'One Month Delay', 'Two Month Delay', 
+                  'Three Month Delay', 'Four Month Delay', 'Five Month Delay',
+                  'Six Month Delay', 'Seven Month Delay', 'Eight Month Delay']
 
 @st.cache_resource
 def load_model(): 
@@ -17,6 +20,61 @@ def load_model():
     return model
 
 model = load_model()
+
+def creditDefaultPredict(input_data): 
+    X = pd.DataFrame([input_data])
+    
+    # Convert 'Yes'/'No' to 1/0
+    X['pay_1'] = X['MemoryComplaints'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                            'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                            'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    X['pay_2'] = X['BehavioralProblems'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                              'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                              'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    X['pay_3'] = X['BehavioralProblems'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                              'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                              'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    X['pay_4'] = X['BehavioralProblems'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                              'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                              'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    X['pay_5'] = X['BehavioralProblems'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                              'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                              'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    X['pay_6'] = X['BehavioralProblems'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                              'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                              'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    # Grab first prediction of model
+    prediction = model.predict(X)[0]
+    
+    return prediction
+
+######### About the app ###############
+
+about_msg = """
+        
+        This app allows you to predict whether you should default to 
+        using a credit card based on your past payment history. 
+        
+        Currently, the app is uisng a model dataset (source below)
+
+        **Instructions**:
+        1. Enter your past payment history for the past 6 months
+        2. Click "Predict" to get the result.
+
+        **Note**: Input data must match the expected format.
+        
+        **Data Source**
+        
+         UC Machine Learning Repository (https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients)
+    """
+
+############ SIDEBAR introduction to project ##########################
+
+with st.sidebar: 
+    st.header("Welcome to the Credit Card Default Prediction App!")
+    st.info(about_msg)
+
+############ SETTING the parameters ##########################
 
 # Define the input features
 feature_names = {
@@ -32,94 +90,22 @@ feature_names = {
 st.header("Input Features")
 user_input = []
 for feature, month in feature_names.items():
-    value = st.number_input(f"Enter value for {month}", key=feature)
+    #value = st.number_input(f"Payment Status for {month}", key=feature)
+    value = st.selectbox(f"Payment Status for {month}", key=feature, options=payment_status)
     user_input.append(value)
 
 # Convert input to NumPy array
-input_data = np.array(user_input).reshape(1, -1)
+input_data = np.array(user_input).reshape(1,1,6)
 
 # Validate input
-if input_data.shape[1] == len(feature_names):
+if input_data.shape == (1,1,6):
     # Predict button
     if st.button("Predict"):
         # Generate prediction
-        prediction = model.predict(input_data)
+        prediction = creditDefaultPredict(input_data)
         st.success(f"Prediction: {prediction[0]}")
 else:
-    st.error("Please ensure all input fields are filled.")
-
-# Add documentation
-st.sidebar.header("App Information")
-st.sidebar.info(
-    """
-    This app allows you to make predictions using a pre-trained machine learning model.
-    
-    **Instructions**:
-    1. Enter values for all features.
-    2. Click "Predict" to get the result.
-
-    **Note**: Input data must match the expected format.
-    """
-)
-
-######### About the app ###############
-'''
-markdown_about_msg = """
-        
-        ## Welcome to the Alzheimer's Prediction Project
-        
-        This web application empowers you to analyze critical patient data that could revolutionize early Alzheimer's detection. 
-        It lets you play around with key parameters to distinguish between patients with and without Alzheimer's. Currently the app
-        is using a model data set (source below)
-        
-        Data source :  KAGGLE : [link](https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset) to the data set
-
-        Field meanings: 
-          - :blue[MMSE]: Mini-Mental State Examination score, ranging from 0 to 30. Lower scores indicate cognitive impairment.
-          - :blue[ADL]: Activities of Daily Living score, ranging from 0 to 10. Lower scores indicate greater impairment.
-          - :blue[Functional Assessment]: Functional assessment score, ranging from 0 to 10. Lower scores indicate greater impairment.
-
-    """
-    
-############ SIDEBAR introduction to project ##########################
-with st.sidebar:
-    st.image(os.path.join(os.path.dirname(__file__), 'image', 'alzheimer_image.jpg'))
-    st.markdown(markdown_about_msg)
-
-col1,col2 = st.columns(2,gap="medium")
-
-with col1: 
-    mmse = st.number_input('Mini-Mental State Examination (MMSE) Rating', min_value=0, max_value=30, value='min')
-    adl = st.number_input('Activities of Daily Living (ADL) Rating', min_value=0, max_value=10, value='min')
-    functAsses = st.number_input('Functional Assessment Rating', min_value=0, max_value=10, value='min')
-
-with col2: 
-    memCompl = st.selectbox('Is the patient experiencing any :orange[Memory Complaints]?', ('No', 'Yes'))
-    behaviorProbs = st.selectbox('Is the patient experiencing any :orange[Behavioral Problems]?', ('No', 'Yes'))
-
-if (mmse != None and adl != None and functAsses != None and
-    memCompl!= None and  behaviorProbs != None):
-    
-    if st.button('Generate Alzheimer Prediction'): 
-        input_data = {
-            'MMSE': mmse, 
-            'ADL': adl,
-            'FunctionalAssessment': functAsses, 
-            'MemoryComplaints': memCompl, 
-            'BehavioralProblems': behaviorProbs, 
-        }
-            
-        # Make prediction
-        result = alzheimersPredict(input_data)
-            
-        # Display result
-        if (result == 1): 
-            st.error('Alzheimer Diagnosis :thumbsdown:')
-        else: 
-            st.success('This patient doesn\'t appear to be diagnosed with Alzheimers :thumbsup:')
-else: 
-    alzheimerPredictButton = st.button('Generate Alzheimer Prediction', disabled=True)
-'''         
+    st.error("Please ensure all input fields are filled.")    
 
 
 
