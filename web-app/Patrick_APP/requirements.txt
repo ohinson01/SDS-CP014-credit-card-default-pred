@@ -9,5 +9,6 @@ pandas>=1.5.0
 joblib
 wheel
 catboost==1.2.7
-numpy==1.26.4
+numpy==1.24.0  # Downgrade to a compatible version
 streamlit==1.38.0
+
