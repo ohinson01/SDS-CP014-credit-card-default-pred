@@ -59,6 +59,9 @@ def main():
     - **repayment statuses**: Payment delays (-1 = pay duly, 1 = 1-month delay, 2 = 2-month delay, 3 = 3 months or more).
     - **bill amounts**: Monthly bill statements.
     - **payment amounts**: Monthly payment amounts.
+    
+        ##### Dataset Citation:
+            UC Machine Learning Repository (https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients
     """)
 
     st.header("Enter Customer Details")
@@ -112,9 +115,6 @@ def main():
         st.bar_chart(data=prob_df.set_index("Class"), use_container_width=True)
     
     st.sidebar.markdown("""
-
-    ##### Dataset Citation:
-        UC Machine Learning Repository (https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients.
     
     #### Note:
     This is a demonstration of a machine learning model's predictive capabilities. Predictions should not be used as the sole basis for decision-making.
