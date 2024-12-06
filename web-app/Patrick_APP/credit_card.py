@@ -60,8 +60,9 @@ def main():
     - **bill amounts**: Monthly bill statements.
     - **payment amounts**: Monthly payment amounts.
     
-        ##### Dataset Citation:
-            UC Machine Learning Repository (https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients
+    
+    #####Dataset Citation
+            This project uses the Default of Credit Card Clients Dataset from the UC Irvine Machine Learning Repository. For more details about the dataset, please visit the official repository.
     """)
 
     st.header("Enter Customer Details")
