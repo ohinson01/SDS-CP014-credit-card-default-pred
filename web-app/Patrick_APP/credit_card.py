@@ -45,8 +45,8 @@ def main():
     
     st.sidebar.title("User Guide")
     st.sidebar.markdown("""
-    This app predicts whether a credit card holder is likely to default on their payment based on user inputs.
-    Enter the required details on the main panel and click **Predict** to get the result.
+    This app predicts whether a credit card holder is likely to default on their next month's payment based on user inputs.
+    Enter the required card holder details for the past 6 months on the main panel and click **Predict** to get the result.
     """)
     
     st.sidebar.markdown("### Feature Descriptions")
