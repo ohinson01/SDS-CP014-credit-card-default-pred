@@ -61,13 +61,11 @@ def main():
     - **payment amounts**: Monthly payment amounts.
     """)
 
-
-     st.sidebar.markdown("""
-    
-     ##### Dataset Citation
-     
-            This project uses the Default of Credit Card Clients Dataset from the UC Irvine Machine Learning Repository
-            "https://archive.ics.uci.edu/ml/machine-learning-databases/00350/default%20of%20credit%20card%20clients.xls. For more details about the dataset, please visit the official repository.
+    st.sidebar.markdown("""
+    ##### Dataset Citation
+    This project uses the Default of Credit Card Clients Dataset from the UC Irvine Machine Learning Repository:
+    https://archive.ics.uci.edu/ml/machine-learning-databases/00350/default%20of%20credit%20card%20clients.xls.
+    For more details about the dataset, please visit the official repository.
     """)
 
     st.header("Enter Customer Details")
@@ -121,10 +119,8 @@ def main():
         st.bar_chart(data=prob_df.set_index("Class"), use_container_width=True)
     
     st.sidebar.markdown("""
-    
     #### Note:
     This is a demonstration of a machine learning model's predictive capabilities. Predictions should not be used as the sole basis for decision-making.
-
     """)
 
 # Run the app
