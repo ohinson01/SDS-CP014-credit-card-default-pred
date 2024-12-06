@@ -15,8 +15,8 @@ def load_model_and_scaler():
     model: The pre-trained model.
     scaler: The scaler for feature normalization.
     """
-    model = joblib.load("gb_credit_model.pk1")
-    scaler = joblib.load("gb_credit_scaler.pk1")
+    model = joblib.load("web-app/Patrick_APP/gb_credit_model.pk1")
+    scaler = joblib.load("web-app/Patrick_APP/gb_credit_scaler.pk1")
     return model, scaler
 
 # Load the model and scaler
