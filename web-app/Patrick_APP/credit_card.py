@@ -69,7 +69,8 @@ def main():
             This project uses the Default of Credit Card Clients Dataset from the UC Irvine Machine Learning Repository
             "https://archive.ics.uci.edu/ml/machine-learning-databases/00350/default%20of%20credit%20card%20clients.xls. For more details about the dataset, please visit the official repository.
     """)
-     st.header("Enter Customer Details")
+
+    st.header("Enter Customer Details")
     
     # User inputs for features
     limit_bal = st.number_input("Credit Limit (limit_bal)", min_value=0, step=1000)
