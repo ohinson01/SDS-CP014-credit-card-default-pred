@@ -112,8 +112,13 @@ def main():
         st.bar_chart(data=prob_df.set_index("Class"), use_container_width=True)
     
     st.sidebar.markdown("""
+
+    ##### Dataset Citation:
+        UC Machine Learning Repository (https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients.
+    
     #### Note:
     This is a demonstration of a machine learning model's predictive capabilities. Predictions should not be used as the sole basis for decision-making.
+
     """)
 
 # Run the app
