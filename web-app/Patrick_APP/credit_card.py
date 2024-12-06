@@ -59,14 +59,17 @@ def main():
     - **repayment statuses**: Payment delays (-1 = pay duly, 1 = 1-month delay, 2 = 2-month delay, 3 = 3 months or more).
     - **bill amounts**: Monthly bill statements.
     - **payment amounts**: Monthly payment amounts.
-    
-    
-    ##### Dataset Citation
-    
-            This project uses the Default of Credit Card Clients Dataset from the UC Irvine Machine Learning Repository "https://archive.ics.uci.edu/ml/machine-learning-databases/00350/default%20of%20credit%20card%20clients.xls. For more details about the dataset, please visit the official repository.
     """)
 
-    st.header("Enter Customer Details")
+
+     st.sidebar.markdown("""
+    
+     ##### Dataset Citation
+     
+            This project uses the Default of Credit Card Clients Dataset from the UC Irvine Machine Learning Repository
+            "https://archive.ics.uci.edu/ml/machine-learning-databases/00350/default%20of%20credit%20card%20clients.xls. For more details about the dataset, please visit the official repository.
+    """)
+     st.header("Enter Customer Details")
     
     # User inputs for features
     limit_bal = st.number_input("Credit Limit (limit_bal)", min_value=0, step=1000)
