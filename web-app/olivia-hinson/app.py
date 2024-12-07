@@ -11,6 +11,7 @@ st.title(':orange[Credit Card Default Prediction]')
 payment_status = ['Paid On Time', 'One Month Delay', 'Two Month Delay', 
                   'Three Month Delay', 'Four Month Delay', 'Five Month Delay',
                   'Six Month Delay', 'Seven Month Delay', 'Eight Month Delay']
+all_fields_filled = False 
 
 @st.cache_resource
 def load_model(): 
@@ -24,25 +25,26 @@ model = load_model()
 def creditDefaultPredict(input_data): 
     X = pd.DataFrame([input_data])
     
-    # Convert 'Yes'/'No' to 1/0
-    X['pay_1'] = X['MemoryComplaints'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
-                                            'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
-                                            'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
-    X['pay_2'] = X['BehavioralProblems'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
-                                              'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
-                                              'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
-    X['pay_3'] = X['BehavioralProblems'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
-                                              'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
-                                              'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
-    X['pay_4'] = X['BehavioralProblems'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
-                                              'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
-                                              'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
-    X['pay_5'] = X['BehavioralProblems'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
-                                              'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
-                                              'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
-    X['pay_6'] = X['BehavioralProblems'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
-                                              'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
-                                              'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    # Convert values to proper format
+    X['pay_1'] = X['pay_1'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                 'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                 'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    X['pay_2'] = X['pay_2'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                 'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                 'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    X['pay_3'] = X['pay_3'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                 'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                 'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    X['pay_4'] = X['pay_4'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                 'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                 'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    X['pay_5'] = X['pay_5'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                 'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                 'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    X['pay_6'] = X['pay_6'].map({'Paid On Time': -1, 'One Month Delay': 1, 'Two Month Delay': 2, 
+                                 'Three Month Delay': 3, 'Four Month Delay': 4, 'Five Month Delay': 5,
+                                 'Six Month Delay': 6, 'Seven Month Delay': 7, 'Eight Month Delay': 8})
+    
     # Grab first prediction of model
     prediction = model.predict(X)[0]
     
@@ -88,22 +90,28 @@ feature_names = {
 
 # Collect user input
 st.header("Input Features")
-user_input = []
+input_data = {}
 for feature, month in feature_names.items():
     #value = st.number_input(f"Payment Status for {month}", key=feature)
-    value = st.selectbox(f"Payment Status for {month}", key=feature, options=payment_status)
-    user_input.append(value)
-
-# Convert input to NumPy array
-input_data = np.array(user_input).reshape(1,1,6)
+    value = st.selectbox(f"Payment Status for {month}", key=feature, options=payment_status, index=None)
+    input_data.update({feature: value})
+    
+if (input_data.get('pay_1') != None and input_data.get('pay_2') != None and 
+    input_data.get('pay_3') != None and input_data.get('pay_4') != None and 
+    input_data.get('pay_5') != None and input_data.get('pay_6') != None): 
+    all_fields_filled = True
 
 # Validate input
-if input_data.shape == (1,1,6):
+if all_fields_filled:
     # Predict button
     if st.button("Predict"):
         # Generate prediction
         prediction = creditDefaultPredict(input_data)
-        st.success(f"Prediction: {prediction[0]}")
+        
+        if (prediction == 1): 
+            st.success('You should use a credit card :thumbsup:')
+        else: 
+            st.error('Don\'t use a credit card :thumbsup:')
 else:
     st.error("Please ensure all input fields are filled.")    
 
