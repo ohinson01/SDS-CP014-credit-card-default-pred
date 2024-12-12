@@ -111,7 +111,7 @@ if all_fields_filled:
         if (prediction == 1): 
             st.success('You should use a credit card :thumbsup:')
         else: 
-            st.error('Don\'t use a credit card :thumbsup:')
+            st.error('Don\'t use a credit card :thumbsdown:')
 else:
     st.error("Please ensure all input fields are filled.")    
 
